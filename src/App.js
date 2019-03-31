@@ -9,8 +9,8 @@ import TodoList from "./components/TodoList";
 class App extends Component {
   state = {
     items: [
-      { id:1, title: 'wake up'},
-      { id:2, title: 'make breakast'}
+      { id:1, title: 'default title'},
+      // { id:2, title: 'make breakast'}
     ],
     id: uuid(),
     item: '',
@@ -35,13 +35,44 @@ class App extends Component {
     this.setState({
       items: updateItems,
       id: uuid(),
+      item: '',
       editItem: false
     }, ()=>{ console.log(this.state);})
   }
 
-  clearList = () => { console.log('clear list')}
-  handleDelete = (id) => { console.log(`handle delete ${id}`)}
-  handleEdit = (id) => { console.log(`handle edit ${id}`)}
+  clearList = () => { 
+    // console.log('clear list')
+    this.setState({
+      items: []
+    })
+  }
+
+  handleDelete = (id) => { 
+    // console.log(`handle delete ${id}`)
+    const filteredItems = this.state.items.filter((item)=>{
+      return id !== item.id;
+    })
+    this.setState({
+      items: filteredItems
+    })
+  }
+  
+  handleEdit = (id) => { 
+    // console.log(`handle edit ${id}`)
+    const filteredItems = this.state.items.filter(item => {
+      return item.id !== id;
+    })
+    const selectedItem = this.state.items.find(item => {
+      return item.id === id;
+    })
+    this.setState({
+      items: filteredItems,
+      item: selectedItem.title,
+      id: id,
+      editItem: true
+    })
+    console.log(selectedItem, selectedItem);
+  }
 
   render() {
 
